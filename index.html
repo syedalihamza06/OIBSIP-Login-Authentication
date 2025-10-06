@@ -1,0 +1,1497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LoginHub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --success-gradient: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            --warning-gradient: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            --dark-bg: #0a0a0f;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-primary: #ffffff;
+            --text-secondary: #b8bcc8;
+            --error-color: #ff4757;
+            --success-color: #00d2d3;
+            --glow-primary: rgba(102, 126, 234, 0.5);
+            --glow-secondary: rgba(240, 147, 251, 0.5);
+            --glow-accent: rgba(79, 172, 254, 0.5);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* Custom Scrollbar - New Design */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, #764ba2 0%, #f093fb 50%, #f5576c 100%);
+            box-shadow: 0 0 15px rgba(102, 126, 234, 0.5);
+        }
+
+        /* Enhanced Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+            overflow: hidden;
+        }
+
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            animation: twinkle 4s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 1; }
+        }
+
+        .nebula {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.3;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .nebula1 {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            top: -200px;
+            right: -200px;
+        }
+
+        .nebula2 {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            bottom: -200px;
+            left: -200px;
+            animation-delay: -10s;
+        }
+
+        .nebula3 {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-delay: -5s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -30px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+        }
+
+        .aurora {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(0deg, transparent, rgba(102, 126, 234, 0.1), transparent);
+            animation: aurora 10s linear infinite;
+        }
+
+        @keyframes aurora {
+            from { transform: translateY(100%); }
+            to { transform: translateY(-100%); }
+        }
+
+        /* Header - New Design */
+        header {
+            padding: 2rem 0;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.1), transparent);
+            animation: headerShine 8s linear infinite;
+        }
+
+        @keyframes headerShine {
+            from { left: -100%; }
+            to { left: 100%; }
+        }
+
+        .app-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 0 40px rgba(102, 126, 234, 0.5);
+            animation: glow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 20px rgba(102, 126, 234, 0.5)); }
+            to { filter: drop-shadow(0 0 30px rgba(240, 147, 251, 0.8)); }
+        }
+
+        .app-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            position: relative;
+            z-index: 1;
+            font-weight: 300;
+            letter-spacing: 2px;
+        }
+
+        /* Main Container */
+        .auth-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: calc(100vh - 200px);
+        }
+
+        /* Enhanced Auth Forms */
+        .auth-wrapper {
+            display: none;
+            width: 100%;
+            max-width: 500px;
+            animation: slideUp 0.6s ease;
+        }
+
+        .auth-wrapper.active {
+            display: block;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .auth-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 3rem;
+            border: 1px solid var(--glass-border);
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.5), transparent);
+            animation: borderGlow 3s linear infinite;
+        }
+
+        @keyframes borderGlow {
+            from { transform: translateX(-100%); }
+            to { transform: translateX(100%); }
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .auth-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            background: var(--primary-gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+            animation: iconFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes iconFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .auth-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #ffffff 0%, #b8bcc8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .auth-subtitle {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            font-weight: 300;
+        }
+
+        .form-group {
+            margin-bottom: 1.8rem;
+            position: relative;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.8rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            transition: color 0.3s ease;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 1.2rem 1.5rem 1.2rem 3.5rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid var(--glass-border);
+            border-radius: 20px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-weight: 400;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #667eea;
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: 
+                0 0 30px rgba(102, 126, 234, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .form-input:focus + .input-icon {
+            color: #667eea;
+        }
+
+        .form-input::placeholder {
+            color: var(--text-secondary);
+            opacity: 0.6;
+        }
+
+        .form-input.error {
+            border-color: var(--error-color);
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .error-message {
+            color: var(--error-color);
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .success-message {
+            color: var(--success-color);
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .auth-btn {
+            width: 100%;
+            padding: 1.3rem 2rem;
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 1.5rem;
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 0.5px;
+        }
+
+        .auth-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .auth-btn:hover::before {
+            left: 100%;
+        }
+
+        .auth-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 
+                0 15px 35px rgba(102, 126, 234, 0.4),
+                0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .auth-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .auth-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .auth-switch {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .auth-switch a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .auth-switch a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-gradient);
+            transition: width 0.3s ease;
+        }
+
+        .auth-switch a:hover::after {
+            width: 100%;
+        }
+
+        /* Enhanced Dashboard */
+        .dashboard {
+            display: none;
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            animation: fadeInScale 0.6s ease;
+        }
+
+        .dashboard.active {
+            display: block;
+        }
+
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .dashboard-header {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 2.5rem;
+            margin-bottom: 2.5rem;
+            border: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .user-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--primary-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 700;
+            box-shadow: 
+                0 15px 35px rgba(102, 126, 234, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .user-avatar::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            animation: avatarShine 3s linear infinite;
+        }
+
+        @keyframes avatarShine {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .user-details h2 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #ffffff 0%, #b8bcc8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .user-details p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            font-weight: 300;
+        }
+
+        .logout-btn {
+            padding: 1rem 2.5rem;
+            background: var(--secondary-gradient);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            letter-spacing: 0.5px;
+        }
+
+        .logout-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 
+                0 15px 35px rgba(240, 147, 251, 0.4),
+                0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .dashboard-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .dashboard-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 2.5rem;
+            border: 1px solid var(--glass-border);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dashboard-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--primary-gradient);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .dashboard-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 
+                0 25px 50px rgba(0, 0, 0, 0.3),
+                0 10px 20px rgba(102, 126, 234, 0.2);
+            border-color: rgba(102, 126, 234, 0.3);
+        }
+
+        .card-icon {
+            width: 70px;
+            height: 70px;
+            margin-bottom: 1.5rem;
+            background: var(--primary-gradient);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .dashboard-card:hover .card-icon {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #ffffff 0%, #b8bcc8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .card-content {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            font-weight: 300;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1.2rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 15px;
+            border: 1px solid var(--glass-border);
+            transition: all 0.3s ease;
+        }
+
+        .stat-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateY(-2px);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        /* Loading Spinner */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Footer - New Design */
+        footer {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid var(--glass-border);
+            padding: 2.5rem 0;
+            margin-top: auto;
+            text-align: center;
+            position: relative;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.3), transparent);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 400;
+            position: relative;
+        }
+
+        .footer-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-gradient);
+            transition: width 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: #667eea;
+        }
+
+        .footer-link:hover::after {
+            width: 100%;
+        }
+
+        .footer-copyright {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 300;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .app-title {
+                font-size: 2.2rem;
+            }
+
+            .auth-card {
+                padding: 2rem;
+            }
+
+            .dashboard-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .dashboard-content {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-links {
+                flex-wrap: wrap;
+                gap: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .app-title {
+                font-size: 1.8rem;
+            }
+
+            .auth-card {
+                padding: 1.5rem;
+            }
+
+            .form-input {
+                padding: 1rem 1.5rem 1rem 3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Enhanced Animated Background -->
+    <div class="bg-animation">
+        <div class="stars" id="stars"></div>
+        <div class="nebula nebula1"></div>
+        <div class="nebula nebula2"></div>
+        <div class="nebula nebula3"></div>
+        <div class="aurora"></div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <h1 class="app-title">LoginHub</h1>
+        <p class="app-subtitle">NEXT-GENERATION AUTHENTICATION SYSTEM</p>
+    </header>
+
+    <!-- Main Container -->
+    <main class="auth-container">
+        <!-- Login Form -->
+        <div class="auth-wrapper active" id="loginForm">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <div class="auth-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h2 class="auth-title">Welcome Back</h2>
+                    <p class="auth-subtitle">Enter your credentials to access your account</p>
+                </div>
+                
+                <form id="loginFormElement">
+                    <div class="form-group">
+                        <label class="form-label" for="loginEmail">Email Address</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-envelope input-icon"></i>
+                            <input 
+                                type="email" 
+                                class="form-input" 
+                                id="loginEmail" 
+                                placeholder="your@email.com"
+                                required
+                            >
+                        </div>
+                        <div class="error-message" id="loginEmailError"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="loginPassword">Password</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-lock input-icon"></i>
+                            <input 
+                                type="password" 
+                                class="form-input" 
+                                id="loginPassword" 
+                                placeholder="Enter your password"
+                                required
+                            >
+                        </div>
+                        <div class="error-message" id="loginPasswordError"></div>
+                    </div>
+                    
+                    <button type="submit" class="auth-btn" id="loginBtn">
+                        <span id="loginBtnText">Sign In</span>
+                    </button>
+                    
+                    <div class="success-message" id="loginSuccess"></div>
+                </form>
+                
+                <div class="auth-switch">
+                    Don't have an account? <a href="#" onclick="showRegister()">Create one</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Register Form -->
+        <div class="auth-wrapper" id="registerForm">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <div class="auth-icon">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                    <h2 class="auth-title">Create Account</h2>
+                    <p class="auth-subtitle">Join our secure platform today</p>
+                </div>
+                
+                <form id="registerFormElement">
+                    <div class="form-group">
+                        <label class="form-label" for="registerName">Full Name</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-user input-icon"></i>
+                            <input 
+                                type="text" 
+                                class="form-input" 
+                                id="registerName" 
+                                placeholder="Syed Ali Hamza"
+                                required
+                            >
+                        </div>
+                        <div class="error-message" id="registerNameError"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="registerEmail">Email Address</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-envelope input-icon"></i>
+                            <input 
+                                type="email" 
+                                class="form-input" 
+                                id="registerEmail" 
+                                placeholder="your@email.com"
+                                required
+                            >
+                        </div>
+                        <div class="error-message" id="registerEmailError"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="registerPassword">Password</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-lock input-icon"></i>
+                            <input 
+                                type="password" 
+                                class="form-input" 
+                                id="registerPassword" 
+                                placeholder="Create a strong password"
+                                required
+                            >
+                        </div>
+                        <div class="error-message" id="registerPasswordError"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="registerConfirmPassword">Confirm Password</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-lock input-icon"></i>
+                            <input 
+                                type="password" 
+                                class="form-input" 
+                                id="registerConfirmPassword" 
+                                placeholder="Confirm your password"
+                                required
+                            >
+                        </div>
+                        <div class="error-message" id="registerConfirmPasswordError"></div>
+                    </div>
+                    
+                    <button type="submit" class="auth-btn" id="registerBtn">
+                        <span id="registerBtnText">Create Account</span>
+                    </button>
+                    
+                    <div class="success-message" id="registerSuccess"></div>
+                </form>
+                
+                <div class="auth-switch">
+                    Already have an account? <a href="#" onclick="showLogin()">Sign in</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard -->
+        <div class="dashboard" id="dashboard">
+            <div class="dashboard-header">
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar">JD</div>
+                    <div class="user-details">
+                        <h2 id="userName">John Doe</h2>
+                        <p id="userEmail">john.doe@example.com</p>
+                    </div>
+                </div>
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Logout
+                </button>
+            </div>
+
+            <div class="dashboard-content">
+                <div class="dashboard-card">
+                    <div class="card-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="card-title">Security Status</h3>
+                    <div class="card-content">
+                        <p>Advanced protection with military-grade encryption and multi-layer security protocols.</p>
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <div class="stat-number">✓</div>
+                                <div class="stat-label">2FA Enabled</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">✓</div>
+                                <div class="stat-label">SSL Secured</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-card">
+                    <div class="card-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="card-title">Activity Analytics</h3>
+                    <div class="card-content">
+                        <p>Real-time monitoring of your account activity and login patterns.</p>
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <div class="stat-number" id="loginCount">0</div>
+                                <div class="stat-label">Total Logins</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number" id="lastLogin">Today</div>
+                                <div class="stat-label">Last Login</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-card">
+                    <div class="card-icon">
+                        <i class="fas fa-user-cog"></i>
+                    </div>
+                    <h3 class="card-title">Account Settings</h3>
+                    <div class="card-content">
+                        <p>Comprehensive control over your account preferences and privacy settings.</p>
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <div class="stat-number">✓</div>
+                                <div class="stat-label">Verified</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">Active</div>
+                                <div class="stat-label">Status</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-card">
+                    <div class="card-icon">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <h3 class="card-title">Smart Notifications</h3>
+                    <div class="card-content">
+                        <p>Intelligent alerts for important account events and security updates.</p>
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <div class="stat-number">3</div>
+                                <div class="stat-label">New</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">12</div>
+                                <div class="stat-label">Total</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-card">
+                    <div class="card-icon">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <h3 class="card-title">Privacy Protection</h3>
+                    <div class="card-content">
+                        <p>Your data is encrypted with AES-256 encryption and stored securely.</p>
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <div class="stat-number">256</div>
+                                <div class="stat-label">Bit Encryption</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">GDPR</div>
+                                <div class="stat-label">Compliant</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-card">
+                    <div class="card-icon">
+                        <i class="fas fa-history"></i>
+                    </div>
+                    <h3 class="card-title">Session History</h3>
+                    <div class="card-content">
+                        <p>Detailed log of all your account sessions and access attempts.</p>
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <div class="stat-number">5</div>
+                                <div class="stat-label">This Week</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">23</div>
+                                <div class="stat-label">This Month</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Enhanced Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="#" class="footer-link">Privacy Policy</a>
+                <a href="#" class="footer-link">Terms of Service</a>
+                <a href="#" class="footer-link">Security</a>
+                <a href="mailto:syedalihamzanaqvi06@gmail.com" class="footer-link">Support</a>
+            </div>
+            <div class="footer-copyright">
+                © 2025 LoginHub. All rights reserved. | Secured with ❤️ Syed Ali Hamza
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Enhanced Authentication System
+        class AuthSystem {
+            constructor() {
+                this.currentUser = null;
+                this.init();
+            }
+
+            init() {
+                this.createStars();
+                this.setupEventListeners();
+                this.checkSession();
+            }
+
+            createStars() {
+                const starsContainer = document.getElementById('stars');
+                const starCount = 150;
+                
+                for (let i = 0; i < starCount; i++) {
+                    const star = document.createElement('div');
+                    star.className = 'star';
+                    star.style.left = Math.random() * 100 + '%';
+                    star.style.top = Math.random() * 100 + '%';
+                    star.style.animationDelay = Math.random() * 4 + 's';
+                    star.style.animationDuration = (3 + Math.random() * 2) + 's';
+                    
+                    // Vary star sizes
+                    const size = Math.random() * 3;
+                    star.style.width = size + 'px';
+                    star.style.height = size + 'px';
+                    
+                    starsContainer.appendChild(star);
+                }
+            }
+
+            setupEventListeners() {
+                // Login form
+                document.getElementById('loginFormElement').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.handleLogin();
+                });
+
+                // Register form
+                document.getElementById('registerFormElement').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.handleRegister();
+                });
+
+                // Clear errors on input
+                document.querySelectorAll('.form-input').forEach(input => {
+                    input.addEventListener('input', () => {
+                        this.clearError(input);
+                    });
+                });
+            }
+
+            // Enhanced hash function
+            hashPassword(password) {
+                let hash = 0;
+                for (let i = 0; i < password.length; i++) {
+                    const char = password.charCodeAt(i);
+                    hash = ((hash << 5) - hash) + char;
+                    hash = hash & hash;
+                }
+                return btoa(hash.toString()); // Base64 encode for better storage
+            }
+
+            validateEmail(email) {
+                const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return re.test(email);
+            }
+
+            validatePassword(password) {
+                return password.length >= 6;
+            }
+
+            showError(inputId, message) {
+                const input = document.getElementById(inputId);
+                const errorElement = document.getElementById(inputId + 'Error');
+                
+                input.classList.add('error');
+                errorElement.textContent = message;
+                errorElement.style.display = 'block';
+            }
+
+            clearError(input) {
+                input.classList.remove('error');
+                const errorElement = document.getElementById(input.id + 'Error');
+                if (errorElement) {
+                    errorElement.style.display = 'none';
+                }
+            }
+
+            showSuccess(elementId, message) {
+                const element = document.getElementById(elementId);
+                element.textContent = message;
+                element.style.display = 'block';
+                
+                setTimeout(() => {
+                    element.style.display = 'none';
+                }, 3000);
+            }
+
+            async handleLogin() {
+                const email = document.getElementById('loginEmail').value;
+                const password = document.getElementById('loginPassword').value;
+                const loginBtn = document.getElementById('loginBtn');
+                const loginBtnText = document.getElementById('loginBtnText');
+
+                // Clear previous errors
+                this.clearError(document.getElementById('loginEmail'));
+                this.clearError(document.getElementById('loginPassword'));
+
+                // Validation
+                let isValid = true;
+
+                if (!this.validateEmail(email)) {
+                    this.showError('loginEmail', 'Please enter a valid email address');
+                    isValid = false;
+                }
+
+                if (!password) {
+                    this.showError('loginPassword', 'Please enter your password');
+                    isValid = false;
+                }
+
+                if (!isValid) return;
+
+                // Show loading state
+                loginBtn.disabled = true;
+                loginBtnText.innerHTML = '<span class="loading"></span> Authenticating...';
+
+                // Simulate API call
+                await new Promise(resolve => setTimeout(resolve, 1500));
+
+                // Get users from localStorage
+                const users = JSON.parse(localStorage.getItem('users') || '[]');
+                const hashedPassword = this.hashPassword(password);
+                
+                const user = users.find(u => u.email === email && u.password === hashedPassword);
+
+                if (user) {
+                    // Successful login
+                    this.currentUser = user;
+                    this.createSession(user);
+                    this.showSuccess('loginSuccess', 'Authentication successful! Redirecting...');
+                    
+                    setTimeout(() => {
+                        this.showDashboard();
+                    }, 1500);
+                } else {
+                    // Failed login
+                    this.showError('loginEmail', 'Invalid credentials');
+                    this.showError('loginPassword', 'Invalid credentials');
+                }
+
+                // Reset button state
+                loginBtn.disabled = false;
+                loginBtnText.textContent = 'Sign In';
+            }
+
+            async handleRegister() {
+                const name = document.getElementById('registerName').value;
+                const email = document.getElementById('registerEmail').value;
+                const password = document.getElementById('registerPassword').value;
+                const confirmPassword = document.getElementById('registerConfirmPassword').value;
+                const registerBtn = document.getElementById('registerBtn');
+                const registerBtnText = document.getElementById('registerBtnText');
+
+                // Clear previous errors
+                document.querySelectorAll('#registerForm .form-input').forEach(input => {
+                    this.clearError(input);
+                });
+
+                // Validation
+                let isValid = true;
+
+                if (!name || name.length < 2) {
+                    this.showError('registerName', 'Name must be at least 2 characters');
+                    isValid = false;
+                }
+
+                if (!this.validateEmail(email)) {
+                    this.showError('registerEmail', 'Please enter a valid email address');
+                    isValid = false;
+                }
+
+                if (!this.validatePassword(password)) {
+                    this.showError('registerPassword', 'Password must be at least 6 characters');
+                    isValid = false;
+                }
+
+                if (password !== confirmPassword) {
+                    this.showError('registerConfirmPassword', 'Passwords do not match');
+                    isValid = false;
+                }
+
+                if (!isValid) return;
+
+                // Show loading state
+                registerBtn.disabled = true;
+                registerBtnText.innerHTML = '<span class="loading"></span> Creating account...';
+
+                // Simulate API call
+                await new Promise(resolve => setTimeout(resolve, 1500));
+
+                // Check if user already exists
+                const users = JSON.parse(localStorage.getItem('users') || '[]');
+                
+                if (users.find(u => u.email === email)) {
+                    this.showError('registerEmail', 'An account with this email already exists');
+                    registerBtn.disabled = false;
+                    registerBtnText.textContent = 'Create Account';
+                    return;
+                }
+
+                // Create new user
+                const newUser = {
+                    id: Date.now().toString(),
+                    name: name,
+                    email: email,
+                    password: this.hashPassword(password),
+                    createdAt: new Date().toISOString(),
+                    loginCount: 0,
+                    lastLogin: null
+                };
+
+                users.push(newUser);
+                localStorage.setItem('users', JSON.stringify(users));
+
+                // Success
+                this.showSuccess('registerSuccess', 'Account created successfully! Please sign in.');
+                
+                // Reset form
+                document.getElementById('registerFormElement').reset();
+                
+                // Switch to login after delay
+                setTimeout(() => {
+                    showLogin();
+                }, 2000);
+
+                // Reset button state
+                registerBtn.disabled = false;
+                registerBtnText.textContent = 'Create Account';
+            }
+
+            createSession(user) {
+                const session = {
+                    user: user,
+                    loginTime: new Date().toISOString(),
+                    expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString() // 24 hours
+                };
+                localStorage.setItem('session', JSON.stringify(session));
+
+                // Update user login count
+                const users = JSON.parse(localStorage.getItem('users') || '[]');
+                const userIndex = users.findIndex(u => u.id === user.id);
+                if (userIndex !== -1) {
+                    users[userIndex].loginCount = (users[userIndex].loginCount || 0) + 1;
+                    users[userIndex].lastLogin = new Date().toISOString();
+                    localStorage.setItem('users', JSON.stringify(users));
+                }
+            }
+
+            checkSession() {
+                const sessionData = localStorage.getItem('session');
+                
+                if (sessionData) {
+                    try {
+                        const session = JSON.parse(sessionData);
+                        
+                        if (new Date(session.expiresAt) > new Date()) {
+                            // Session is valid
+                            this.currentUser = session.user;
+                            this.showDashboard();
+                        } else {
+                            // Session expired
+                            localStorage.removeItem('session');
+                        }
+                    } catch (e) {
+                        localStorage.removeItem('session');
+                    }
+                }
+            }
+
+            showDashboard() {
+                // Hide auth forms
+                document.getElementById('loginForm').classList.remove('active');
+                document.getElementById('registerForm').classList.remove('active');
+                
+                // Show dashboard
+                document.getElementById('dashboard').classList.add('active');
+                
+                // Update user info
+                const user = this.currentUser;
+                document.getElementById('userName').textContent = user.name;
+                document.getElementById('userEmail').textContent = user.email;
+                
+                // Set avatar initials
+                const initials = user.name.split(' ').map(n => n[0]).join('').toUpperCase();
+                document.getElementById('userAvatar').textContent = initials;
+                
+                // Update stats
+                const users = JSON.parse(localStorage.getItem('users') || '[]');
+                const currentUserData = users.find(u => u.id === user.id);
+                
+                if (currentUserData) {
+                    document.getElementById('loginCount').textContent = currentUserData.loginCount || 0;
+                    
+                    if (currentUserData.lastLogin) {
+                        const lastLogin = new Date(currentUserData.lastLogin);
+                        const today = new Date();
+                        const diffTime = Math.abs(today - lastLogin);
+                        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+                        
+                        if (diffDays === 0) {
+                            document.getElementById('lastLogin').textContent = 'Today';
+                        } else if (diffDays === 1) {
+                            document.getElementById('lastLogin').textContent = 'Yesterday';
+                        } else {
+                            document.getElementById('lastLogin').textContent = `${diffDays} days ago`;
+                        }
+                    }
+                }
+            }
+
+            logout() {
+                localStorage.removeItem('session');
+                this.currentUser = null;
+                
+                // Hide dashboard
+                document.getElementById('dashboard').classList.remove('active');
+                
+                // Show login form
+                document.getElementById('loginForm').classList.add('active');
+                
+                // Clear form
+                document.getElementById('loginFormElement').reset();
+            }
+        }
+
+        // Global functions for navigation
+        function showLogin() {
+            document.getElementById('registerForm').classList.remove('active');
+            document.getElementById('loginForm').classList.add('active');
+        }
+
+        function showRegister() {
+            document.getElementById('loginForm').classList.remove('active');
+            document.getElementById('registerForm').classList.add('active');
+        }
+
+        function logout() {
+            authSystem.logout();
+        }
+
+        // Initialize the authentication system
+        const authSystem = new AuthSystem();
+    </script>
+</body>
+</html>
